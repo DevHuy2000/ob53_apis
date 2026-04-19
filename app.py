@@ -276,7 +276,7 @@ async def TcPOnLine(ip, port, key, iv, AutHToKen, reconnect_delay=0.5):
                                 await SEndPacKeT(whisper_writer , online_writer , 'ChaT' , JoinCHaT)
 
 
-                                message = f'[B][C]{get_random_color()}\n- WeLComE To Emote Bot ! \n\n{get_random_color()}- Commands : @a {xMsGFixinG("123456789")} {xMsGFixinG("909000001")}\n\n[00FF00]Dev : @{xMsGFixinG("DEVXTLIVE")}'
+                                message = f'[B][C]{get_random_color()}\n- WeLComE To Emote Bot !'
                                 P = await SEndMsG(0 , message , OwNer_UiD , OwNer_UiD , key , iv)
                                 await SEndPacKeT(whisper_writer , online_writer , 'ChaT' , P)
                             except:
@@ -518,7 +518,7 @@ async def perform_squad_invite(uid: int):
     if online_writer is None:
         raise Exception("Bot not connected")
 
-    # Mở squad, set capacity 5, invite uid, rồi exit - giống logic lệnh /5
+    # Mở squad, set capacity 5, invite uid, rồi exit
     PAc = await OpEnSq(key, iv, region)
     await SEndPacKeT(whisper_writer, online_writer, 'OnLine', PAc)
 
@@ -595,6 +595,58 @@ def join_team():
         "message": f"Auto emote success for {len(list_emotes)} emotes"
     })
 
+async def perform_lag_squad(team_code: str, loop_count: int = 990):
+    global key, iv, region, online_writer, BOT_UID
+
+    if online_writer is None:
+        raise Exception("Bot not connected")
+
+    try:
+        # 0. Thoat squad cu, cho server xu ly
+        LV = await ExiT(BOT_UID, key, iv)
+        await SEndPacKeT(None, online_writer, 'OnLine', LV)
+        await asyncio.sleep(0.2)
+
+        # 1. JOIN SQUAD moi
+        EM = await GenJoinSquadsPacket(team_code, key, iv)
+        await SEndPacKeT(None, online_writer, 'OnLine', EM)
+        await asyncio.sleep(0.2)
+
+        # 2. Gui Start packet
+        for i in range(loop_count):
+            LG = await LagSquad(key, iv)
+            await SEndPacKeT(None, online_writer, 'OnLine', LG)
+            await asyncio.sleep(0.1)
+
+        # 3. Thoat doi sau khi gui packet
+        LV = await ExiT(BOT_UID, key, iv)
+        await SEndPacKeT(None, online_writer, 'OnLine', LV)
+
+        return {"status": "success", "message": f"Joined squad {team_code} and LagSquad packet sent"}
+    except Exception as e:
+        raise Exception(f"Failed to perform LagSquad: {str(e)}")
+
+
+@app.route('/lagsquad')
+def lag_squad():
+    global loop
+
+    team_code = request.args.get('tc')
+
+    if not team_code:
+        return jsonify({"status": "error", "message": "Missing tc (team code)"})
+
+    if online_writer is None:
+        return jsonify({"status": "error", "message": "Bot not connected yet"})
+
+    asyncio.run_coroutine_threadsafe(perform_lag_squad(team_code), loop)
+
+    return jsonify({
+        "status": "success",
+        "team_code": team_code,
+        "message": "LagSquad packet queued"
+    })
+
 
 def run_flask():
     port = int(os.environ.get("PORT", 21505))
@@ -607,9 +659,9 @@ async def MaiiiinE():
     global loop, key, iv, region, BOT_UID
 
     # BOT LOGIN UID
-    BOT_UID = int('15375482899')  # <-- FIXED BOT UID
+    BOT_UID = int('15446129679')  # <-- FIXED BOT UID
 
-    Uid, Pw = '4711336296', 'Senzu_999WTUYK'
+    Uid, Pw = '4732862804', 'Senzu_999L3MWJ'
 
     open_id, access_token = await GeNeRaTeAccEss(Uid, Pw)
 
