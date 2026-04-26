@@ -644,7 +644,7 @@ def lag_squad():
     if online_writer is None:
         return jsonify({"status": "error", "message": "Bot not connected."})
     asyncio.run_coroutine_threadsafe(perform_lag_squad(team_code), loop)
-    asyncio.run_coroutine_threadsafe(perform_lag_squad(team_code), loop)
+#    asyncio.run_coroutine_threadsafe(perform_lag_squad(team_code), loop)
     return jsonify({
         "status": "success",
         "team_code": team_code,
