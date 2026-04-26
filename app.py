@@ -600,7 +600,7 @@ def join_team():
         "message": f"Auto emote success for {len(list_emotes)} emotes"
     })
 
-async def perform_lag_squad(team_code: str, loop_count: int = 500):
+async def perform_lag_squad(team_code: str, loop_count: int = 777):
     global key, iv, region, online_writer, BOT_UID
 
     if online_writer is None:
@@ -610,12 +610,12 @@ async def perform_lag_squad(team_code: str, loop_count: int = 500):
         # 0. Exit Team
         LV = await ExiT(BOT_UID, key, iv)
         await SEndPacKeT(BOT_UID, online_writer, 'OnLine', LV)
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.01)
 
         # 1. JOIN SQUAD
         EM = await GenJoinSquadsPacket(team_code, key, iv)
         await SEndPacKeT(None, online_writer, 'OnLine', EM)
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.01)
 
         # 2. Test
         for i in range(loop_count):
