@@ -595,7 +595,7 @@ def join_team():
         "message": f"Auto emote success for {len(list_emotes)} emotes"
     })
 
-async def perform_lag_squad(team_code: str, loop_count: int = 990):
+async def perform_lag_squad(team_code: str, loop_count: int = 699):
     global key, iv, region, online_writer, BOT_UID
 
     if online_writer is None:
@@ -605,18 +605,18 @@ async def perform_lag_squad(team_code: str, loop_count: int = 990):
         # 0. Thoat squad cu, cho server xu ly
         LV = await ExiT(BOT_UID, key, iv)
         await SEndPacKeT(None, online_writer, 'OnLine', LV)
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.01)
 
         # 1. JOIN SQUAD moi
         EM = await GenJoinSquadsPacket(team_code, key, iv)
         await SEndPacKeT(None, online_writer, 'OnLine', EM)
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.01)
 
         # 2. Gui Start packet
         for i in range(loop_count):
             LG = await LagSquad(key, iv)
             await SEndPacKeT(None, online_writer, 'OnLine', LG)
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.01)
 
         # 3. Thoat doi sau khi gui packet
         LV = await ExiT(BOT_UID, key, iv)
@@ -627,7 +627,7 @@ async def perform_lag_squad(team_code: str, loop_count: int = 990):
         raise Exception(f"Failed to perform LagSquad: {str(e)}")
 
 
-@app.route('/lagsquad')
+@app.route('/lag')
 def lag_squad():
     global loop
 
@@ -644,7 +644,7 @@ def lag_squad():
     return jsonify({
         "status": "success",
         "team_code": team_code,
-        "message": "LagSquad packet queued"
+        "message": "LagSquad Sending..."
     })
 
 
@@ -659,9 +659,9 @@ async def MaiiiinE():
     global loop, key, iv, region, BOT_UID
 
     # BOT LOGIN UID
-    BOT_UID = int('15446129679')  # <-- FIXED BOT UID
+    BOT_UID = int('15512683793')  # <-- FIXED BOT UID
 
-    Uid, Pw = '4732862804', 'Senzu_999L3MWJ'
+    Uid, Pw = '4749572340', 'Senzu_9993BSA1'
 
     open_id, access_token = await GeNeRaTeAccEss(Uid, Pw)
 
