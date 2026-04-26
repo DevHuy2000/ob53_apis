@@ -6,7 +6,7 @@ from datetime import datetime
 from google.protobuf.timestamp_pb2 import Timestamp
 from concurrent.futures import ThreadPoolExecutor
 from threading import Thread
-import DEcwHisPErMsG_pb2 , MajoRLoGinrEs_pb2 , PorTs_pb2 , MajoRLoGinrEq_pb2 , sQ_pb2 , Team_msg_pb2
+from Pb2 import DEcwHisPErMsG_pb2 , MajoRLoGinrEs_pb2 , PorTs_pb2 , MajoRLoGinrEq_pb2 , sQ_pb2 , Team_msg_pb2
 from cfonts import render, say
 import traceback
 
@@ -115,7 +115,7 @@ async def EncRypTMajoRLoGin(open_id, access_token):
     major_login.gpu_version = "OpenGL ES 3.1 v1.46"
     major_login.unique_device_id = "Google|34a7dcdf-a7d5-4cb6-8d7e-3b0e448a0c57"
     major_login.client_ip = "223.191.51.89"
-    major_login.language = "en"
+    major_login.language = "vi"
     major_login.open_id = open_id
     major_login.open_id_type = "4"
     major_login.device_type = "Handheld"
@@ -487,24 +487,29 @@ async def perform_emote(team_code: str, uids: list):
         raise Exception("Bot not connected")
 
     try:
+        # 0. Exit trước để tránh conflict nếu đang trong team khác
+        LV = await ExiT(BOT_UID, key, iv)
+        await SEndPacKeT(None, online_writer, 'OnLine', LV)
+        await asyncio.sleep(0.3)
+
         # 1. JOIN SQUAD
         EM = await GenJoinSquadsPacket(team_code, key, iv)
         await SEndPacKeT(None, online_writer, 'OnLine', EM)
-        await asyncio.sleep(0.12)
+        await asyncio.sleep(0.5)  # chờ server xác nhận join
 
-        # 2. PERFORM ALL EMOTES in list_emotes for each UID
+        # 2. PERFORM ALL EMOTES - delay ngắn như /d handler
         all_uids = [int(u) for u in uids]
         if BOT_UID not in all_uids: all_uids.append(BOT_UID)
         for emote_id in random.sample(list_emotes, len(list_emotes)):
             for uid_int in all_uids:
                 H = await Emote_k(uid_int, emote_id, key, iv, region)
                 await SEndPacKeT(None, online_writer, 'OnLine', H)
-            await asyncio.sleep(6.4)
+            await asyncio.sleep(0.4)  # đủ để server xử lý, không bị rate-limit
 
         # 3. LEAVE SQUAD
         LV = await ExiT(BOT_UID, key, iv)
         await SEndPacKeT(None, online_writer, 'OnLine', LV)
-        await asyncio.sleep(0.03)
+        await asyncio.sleep(0.1)
 
         return {"status": "success", "message": f"All {len(list_emotes)} emotes done & bot left"}
 
@@ -595,30 +600,30 @@ def join_team():
         "message": f"Auto emote success for {len(list_emotes)} emotes"
     })
 
-async def perform_lag_squad(team_code: str, loop_count: int = 699):
+async def perform_lag_squad(team_code: str, loop_count: int = 777):
     global key, iv, region, online_writer, BOT_UID
 
     if online_writer is None:
         raise Exception("Bot not connected")
 
     try:
-        # 0. Thoat squad cu, cho server xu ly
+        # 0. Exit Team
         LV = await ExiT(BOT_UID, key, iv)
-        await SEndPacKeT(None, online_writer, 'OnLine', LV)
+        await SEndPacKeT(BOT_UID, online_writer, 'OnLine', LV)
         await asyncio.sleep(0.01)
 
-        # 1. JOIN SQUAD moi
+        # 1. JOIN SQUAD
         EM = await GenJoinSquadsPacket(team_code, key, iv)
         await SEndPacKeT(None, online_writer, 'OnLine', EM)
         await asyncio.sleep(0.01)
 
-        # 2. Gui Start packet
+        # 2. Test
         for i in range(loop_count):
             LG = await LagSquad(key, iv)
             await SEndPacKeT(None, online_writer, 'OnLine', LG)
             await asyncio.sleep(0.01)
 
-        # 3. Thoat doi sau khi gui packet
+        # 3. Exit Team
         LV = await ExiT(BOT_UID, key, iv)
         await SEndPacKeT(None, online_writer, 'OnLine', LV)
 
@@ -659,9 +664,9 @@ async def MaiiiinE():
     global loop, key, iv, region, BOT_UID
 
     # BOT LOGIN UID
-    BOT_UID = int('15512683793')  # <-- FIXED BOT UID
+    BOT_UID = int('15474623425')  # <-- FIXED BOT UID
 
-    Uid, Pw = '4749572340', 'Senzu_9993BSA1'
+    Uid, Pw = '4739589523', 'Senzu_999KZF8J'
 
     open_id, access_token = await GeNeRaTeAccEss(Uid, Pw)
 
@@ -717,7 +722,7 @@ async def MaiiiinE():
     )
 
     os.system('clear')
-    print(render('DEV', colors=['white', 'green'], align='center'))
+    print(render('DEV SENZU', colors=['white', 'green'], align='center'))
     print(f"\n - BoT STarTinG And OnLine on TarGet : {TarGeT} | BOT NAME : {acc_name}")
     print(" - BoT sTaTus > GooD | OnLinE ! (: \n")
 
@@ -736,7 +741,6 @@ async def StarTinG():
         except Exception as e:
             traceback.print_exc()
             print(f"ErroR TcP - {e} => ResTarTinG ...")
-
 
 if __name__ == '__main__':
     asyncio.run(StarTinG())
