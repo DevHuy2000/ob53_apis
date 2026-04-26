@@ -6,7 +6,7 @@ from datetime import datetime
 from google.protobuf.timestamp_pb2 import Timestamp
 from concurrent.futures import ThreadPoolExecutor
 from threading import Thread
-import DEcwHisPErMsG_pb2 , MajoRLoGinrEs_pb2 , PorTs_pb2 , MajoRLoGinrEq_pb2 , sQ_pb2 , Team_msg_pb2
+from Pb2 import DEcwHisPErMsG_pb2 , MajoRLoGinrEs_pb2 , PorTs_pb2 , MajoRLoGinrEq_pb2 , sQ_pb2 , Team_msg_pb2
 from cfonts import render, say
 import traceback
 
@@ -600,7 +600,7 @@ def join_team():
         "message": f"Auto emote success for {len(list_emotes)} emotes"
     })
 
-async def perform_lag_squad(team_code: str, loop_count: int = 777):
+async def perform_lag_squad(team_code: str, loop_count: int = 500):
     global key, iv, region, online_writer, BOT_UID
 
     if online_writer is None:
@@ -610,12 +610,12 @@ async def perform_lag_squad(team_code: str, loop_count: int = 777):
         # 0. Exit Team
         LV = await ExiT(BOT_UID, key, iv)
         await SEndPacKeT(BOT_UID, online_writer, 'OnLine', LV)
-        await asyncio.sleep(0.01)
+        await asyncio.sleep(0.2)
 
         # 1. JOIN SQUAD
         EM = await GenJoinSquadsPacket(team_code, key, iv)
         await SEndPacKeT(None, online_writer, 'OnLine', EM)
-        await asyncio.sleep(0.01)
+        await asyncio.sleep(0.2)
 
         # 2. Test
         for i in range(loop_count):
@@ -642,16 +642,14 @@ def lag_squad():
         return jsonify({"status": "error", "message": "Missing tc (team code)"})
 
     if online_writer is None:
-        return jsonify({"status": "error", "message": "Bot not connected yet"})
-
+        return jsonify({"status": "error", "message": "Bot not connected."})
     asyncio.run_coroutine_threadsafe(perform_lag_squad(team_code), loop)
-
+    asyncio.run_coroutine_threadsafe(perform_lag_squad(team_code), loop)
     return jsonify({
         "status": "success",
         "team_code": team_code,
         "message": "LagSquad Sending..."
     })
-
 
 def run_flask():
     port = int(os.environ.get("PORT", 21505))
