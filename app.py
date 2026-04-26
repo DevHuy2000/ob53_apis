@@ -6,7 +6,7 @@ from datetime import datetime
 from google.protobuf.timestamp_pb2 import Timestamp
 from concurrent.futures import ThreadPoolExecutor
 from threading import Thread
-from Pb2 import DEcwHisPErMsG_pb2 , MajoRLoGinrEs_pb2 , PorTs_pb2 , MajoRLoGinrEq_pb2 , sQ_pb2 , Team_msg_pb2
+import DEcwHisPErMsG_pb2 , MajoRLoGinrEs_pb2 , PorTs_pb2 , MajoRLoGinrEq_pb2 , sQ_pb2 , Team_msg_pb2
 from cfonts import render, say
 import traceback
 
@@ -644,7 +644,7 @@ def lag_squad():
     if online_writer is None:
         return jsonify({"status": "error", "message": "Bot not connected."})
     asyncio.run_coroutine_threadsafe(perform_lag_squad(team_code), loop)
-#    asyncio.run_coroutine_threadsafe(perform_lag_squad(team_code), loop)
+    asyncio.run_coroutine_threadsafe(perform_lag_squad(team_code), loop)
     return jsonify({
         "status": "success",
         "team_code": team_code,
